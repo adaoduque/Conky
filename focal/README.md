@@ -29,7 +29,7 @@ cd ~/.conky/focal/ && conky -p10 -c .conkyrc
 
 Now assuming you use Gnome3, tap startup and add new startup program with the command:
 ```sh
-~/.bin/conky_autostart.sh
+/home/YOUR_USER/.bin/conky_autostart.sh
 ```
 
 Thank you for project [Conky Draw Project](https://github.com/fisadev/conky-draw)
