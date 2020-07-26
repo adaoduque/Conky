@@ -1,0 +1,177 @@
+-----------------------------------------------------------------------------
+--                               conkyrc_focal
+-- Date    : 26/07/2020
+-- Author  : Adão Duque
+-- Conky   : >= 1.10 
+-- License : Distributed under the terms of GNU GPL version 2 or later
+-----------------------------------------------------------------------------
+
+conky.config = {
+
+    background = true,
+    update_interval = 1,
+
+    cpu_avg_samples = 2,
+    net_avg_samples = 2,
+    temperature_unit = 'celsius',
+
+    double_buffer = true,
+    no_buffers = true,
+    text_buffer_size = 2048,
+
+    gap_x = 10,
+    gap_y = 70,
+    minimum_width = 1920, minimum_height = 1000,
+    maximum_width = 1900,
+    own_window = true,
+    own_window_type = 'dock',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+
+    own_window_class = 'conky-semi',
+    own_window_hints = 'undecorated,sticky,skip_taskbar,skip_pager,below',
+    border_inner_margin = 0,
+    border_outer_margin = 0,
+    alignment = 'top_right',
+
+
+    draw_shades = false,
+    draw_outline = false,
+    draw_borders = false,
+    draw_graph_borders = false,
+
+    override_utf8_locale = true,
+    use_xft = true,
+    font = 'caviar dreams:size=11',
+    xftalpha = 0.5,
+    uppercase = false,
+
+    default_graph_width = 180,
+    default_graph_height = 20,
+
+    color1 = '#5B5C5C',
+    color2 = '#5B5C5C',
+    color3 = '#F0C5E2',
+    color4 = '#5B5C5C',
+    color5 = '#77B753',
+
+-- Defining colors
+    default_color = '#FFFFFF',
+-- Loading lua script for drawning rings
+    lua_load = 'conky_draw.lua',
+    lua_draw_hook_pre = 'main',
+
+};
+
+--${offset 15}${font Ubuntu:size=11:style=normal}${color1}${pre_exec lsb_release -d | cut -f 2} - $sysname $kernel
+conky.text = [[
+
+
+ #############
+##            ##
+##  CPU TEMP  ##
+##            ##
+ #############
+${voffset 185}
+${offset 500}${font Ubuntu:size=11:style=bold}${color5}CPU Temp:     ${color3}${exec cat /sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input | cut -c-2}°
+
+
+ #################
+##               ##
+##  ROOT / HOME  ##
+##               ##
+ #################
+${voffset 90}
+${offset 1200}${font Ubuntu:size=10:style=bold}${color5}Root Free: $color3${font Ubuntu:size=10:style=normal}${fs_free /}${alignr}${offset -450}${font Ubuntu:size=10:style=bold}${color5} Used: $color3${font Ubuntu:size=10:style=normal}${fs_used /}
+${offset 1200}${font Ubuntu:size=10:style=bold}${color5}Home Free: $color3${font Ubuntu:size=10:style=normal}${fs_free /home}${alignr}${offset -450}${font Ubuntu:size=10:style=bold}${color5} Used: $color3${font Ubuntu:size=10:style=normal}${fs_used /home}
+${offset 1200}${font Ubuntu:size=10:style=bold}${color5}Read:   ${color3}${diskio_read}
+${offset 1200}${font Ubuntu:size=10:style=bold}${color5}Write:  ${color3}${diskio_write}
+${offset 1204}${diskiograph 20, 220 666666 666655 -0.5 -l}
+
+
+ ###############
+##              ##
+##  CPU CORE'S  ##
+##              ##
+ ###############
+${voffset -145}
+${offset 500}${font Ubuntu:size=11:style=bold}${color5}CPU 0:     ${color3}${cpu cpu1}%
+${offset 500}${font Ubuntu:size=11:style=bold}${color5}CPU 1:     ${color3}${cpu cpu2}%
+${offset 500}${font Ubuntu:size=11:style=bold}${color5}CPU 2:     ${color3}${cpu cpu3}%
+${offset 500}${font Ubuntu:size=11:style=bold}${color5}CPU 3:     ${color3}${cpu cpu4}%
+
+
+ ###############
+##              ##
+##  TOP PROCESS ##
+##              ##
+ ###############
+${voffset -40}
+${offset 500}${font Ubuntu:size=11:style=bold}${color5}Top Process
+${offset 500}${font Ubuntu:size=11:style=normal}${color4}${top name 1}${alignr}${offset -1200}${top cpu 1} %
+${offset 500}${font Ubuntu:size=11:style=normal}${color1}${top name 2}${alignr}${offset -1200}${top cpu 2} %
+${offset 500}${font Ubuntu:size=11:style=normal}${color2}${top name 3}${alignr}${offset -1200}${top cpu 3} %
+${offset 500}${font Ubuntu:size=11:style=normal}${color3}${top name 4}${alignr}${offset -1200}${top cpu 4} %
+${voffset -22}
+${offset 500}${cpugraph cpu0 20,200 666666 666655 -0.5 -l}
+
+
+ ####################
+##                  ##
+##  GPU UTILIZATION ##
+##                  ##
+ ####################
+${voffset -50}
+${offset 1290}${font Ubuntu:size=11:style=bold}${color5}GPU: ${color3}${exec nvidia-smi -i 0 --query-gpu=gpu_name --format=csv,noheader,nounits}
+${offset 1290}${font Ubuntu:size=11:style=bold}${color5}Utilization:  ${color3}${exec nvidia-settings -tq GPUUtilization | awk -F '[,= ]' '{ print $2 }'}%
+${offset 1290}${font Ubuntu:size=11:style=bold}${color5}VRAM Util.:  ${color3}${exec nvidia-smi -i 0| grep % | cut -c 37-40} MB
+${offset 1290}${font Ubuntu:size=11:style=bold}${color5}Temp.:  ${color3}${execi 60 nvidia-settings -query [gpu:0]/GPUCoreTemp -t}°c
+${offset 1290}${font Ubuntu:size=11:style=bold}${color5}Fan:  ${color3}${exec nvidia-smi | grep % | cut -c 3-5}
+${voffset -22}
+${offset 1224} ${execigraph 1 "nvidia-settings -tq GPUUtilization | awk -F '[,= ]' '{ print $2 }'" 20,200 666666 666655 -0.5 -l}
+
+
+ ####################
+##                  ##
+##     NETWORK      ##
+##                  ##
+ ####################
+${voffset -118}
+${offset 500}${font Ubuntu:size=11:style=bold}${color5}NETWORK
+${offset 500}${font Ubuntu:size=10:style=bold}${color5} Lan IP: ${alignr}${offset -1226}${color3}${addr eno1} 
+${offset 500}${font Ubuntu:size=10:style=bold}${color5} Down: ${alignr}${offset -1160}${font Ubuntu:size=10:style=normal}${color3}${downspeed eno1} $color2 / $color3${totaldown eno1}
+${offset 500}${font ubuntu:size=10:style=bold}${color5} Up: ${alignr}${offset -1160}${font Ubuntu:size=10:style=normal}${color3}${upspeed eno1} $color2 / $color3${totalup eno1}
+${voffset -15}
+${offset 500}${downspeedgraph eno1 20,214 324D23 77B753 10000KiB -l}
+${voffset -30}
+${offset 500}${upspeedgraph eno1 20,214 4B1B0C FF5C2B 1000KiB -l}
+
+
+ ####################
+##                  ##
+##      MEMORY      ##
+##                  ##
+ ####################
+${voffset 28}
+${offset 500}${font Ubuntu:size=11:style=bold}${color5}MEMORY
+${offset 500}${font Ubuntu:size=11:style=bold}${color5}Usage: ${alignr}${color3}${offset -1150}$mem / $memmax
+${offset 500}${font Ubuntu:size=11:style=bold}${color5}Perc.:${alignr}${color3}${offset -1150}$memperc%
+${offset 500}${font Ubuntu:size=11:style=normal}${color4}${top_mem name 1}${alignr}${offset -1150}${top_mem mem_res 1}
+${offset 500}${font Ubuntu:size=11:style=normal}${color1}${top_mem name 2}${alignr}${offset -1150}${top_mem mem_res 2}
+${offset 500}${font Ubuntu:size=11:style=normal}${color2}${top_mem name 3}${alignr}${offset -1150}${top_mem mem_res 3}
+${offset 500}${font Ubuntu:size=11:style=normal}${color3}${top_mem name 4}${alignr}${offset -1150}${top_mem mem_res 4}
+${offset 500}${color #000000}${memgraph 20,247 666666 666666 -0.5 -l}
+
+
+ ####################
+##                  ##
+##      SYSTEM      ##
+##                  ##
+ ####################
+${voffset -800}
+${offset 1000}${font Ubuntu:size=11:style=bold}${color5}SYSTEM
+${offset 1000}${font Ubuntu:size=11:style=normal}${color5}Distro: ${color3}UBUNTU BIONIC
+${offset 1000}${font Ubuntu:size=11:style=normal}${color5}kernel: ${color3}$sysname $kernel
+${offset 1000}${font Ubuntu:size=11:style=normal}${color5}Uptime: ${color3}$uptime
+
+]];
