@@ -1,6 +1,6 @@
 # Conky Focal Theme
 
-![Print](https://doc-0g-1o-docs.googleusercontent.com/docs/securesc/dhf2908k6pfhj17h5qohj4u864e1frbm/juulf2fagn5nb95g6b318mtb4t12nqs8/1595788500000/01724923584160069038/01724923584160069038/1KIHJTScAmfg3SxvHDik3NEtFISpnf5sy?e=view&authuser=0&nonce=0i5ldq67ie62k&user=01724923584160069038&hash=9v5rs5ni6tahk5tbdufi680vlh2pbk2t)
+![Print](https://drive.google.com/uc?export=view&id=1KIHJTScAmfg3SxvHDik3NEtFISpnf5sy)
 
 ## Requirements
 Install package `conky-all` in your distro.
